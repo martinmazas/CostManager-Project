@@ -87,7 +87,7 @@ public class ViewModel implements IViewModel {
         pool.submit(new Runnable() {
             @Override
             public void run() {
-                List<String> categories = null;
+                List<Category> categories = null;
                 try {
                     categories = model.getCategoryList();
                 } catch (CostManagerException e) {

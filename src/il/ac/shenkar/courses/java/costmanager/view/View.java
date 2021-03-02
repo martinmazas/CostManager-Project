@@ -43,7 +43,7 @@ public class View implements IView {
     }
 
     @Override
-    public void showCategories(List<String> categories) {
+    public void showCategories(List<Category> categories) {
         ui.showCategories(categories);
     }
 
@@ -92,6 +92,8 @@ public class View implements IView {
         private JLabel lbDateInit, lbDateEnd, lbReportsMessage, lbReport;
         private JDatePickerImpl initDatePicker, endDatePicker;
         private JButton btGetReport;
+
+        private List<Category> categories = new ArrayList<>();
 
         public ApplicationUI() {
             /**
@@ -324,8 +326,14 @@ public class View implements IView {
                             case "GBP" -> Currency.GBP;
                             default -> Currency.USD;
                         };
-                        String cat = categoryBox.getSelectedItem().toString();
-                        Category finalCategory = new Category(1,cat); // needs to change id to be dynamic
+                        String cat = Objects.requireNonNull(categoryBox.getSelectedItem()).toString();
+                        int id=0;
+                        for (Category category : categories) {
+                            if (cat.equals(category.getName())) {
+                                id = category.getId();
+                            }
+                        }
+                        Category finalCategory = new Category(id,cat);
                         Date selectedDate = (Date) datePicker.getModel().getValue();
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         String reportDate = df.format(selectedDate);
@@ -508,23 +516,15 @@ public class View implements IView {
             }
         }
 
-        public void showCategories(List<String> categories) {
-            DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categories.toArray());
-            mod = new DefaultComboBoxModel(categories.toArray());
+        public void showCategories(List<Category> categories) {
+            this.categories = categories;
+            List<String> categoriesName = new ArrayList<>();
+            for (Category category : categories) {
+                categoriesName.add(category.getName());
+            }
+            DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categoriesName.toArray());
+            mod = new DefaultComboBoxModel(categoriesName.toArray());
             categoryBox = new JComboBox(modComboBox);
-//            if (SwingUtilities.isEventDispatchThread()) {
-//                costItem();
-//            } else {
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        costItem();
-//                    }
-//                });
-//
-//            }
-
         }
-
     }
 }

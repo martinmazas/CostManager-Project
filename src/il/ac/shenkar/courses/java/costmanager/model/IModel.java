@@ -33,6 +33,6 @@ public interface IModel {
 
     public CostItem[] getCostItems() throws CostManagerException;
 
-    List<String> getCategoryList() throws CostManagerException;
+    List<Category> getCategoryList() throws CostManagerException;
 
 }

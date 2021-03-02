@@ -68,7 +68,7 @@ public class DerbyDBModel implements IModel {
         }
     }
 
-    public List<String> getCategoryList() throws CostManagerException {
+    public List<Category> getCategoryList() throws CostManagerException {
         /**
          * Using SQL query to get all the categories from the table , enter them to a new list and returns it.
          */
@@ -90,14 +90,14 @@ public class DerbyDBModel implements IModel {
         }
 
         // createConnection();
-        List<String> categoryList = new ArrayList<>();
+        List<Category> categoryList = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM categories ORDER BY name";
             rs = statement.executeQuery(query);
             while (rs.next()) {
                 Category category = new Category(rs.getInt("id"), rs.getString("name"));
-                categoryList.add(category.getName());
+                categoryList.add(category);
             }
         } catch (SQLException e) {
             throw new CostManagerException("Problem with add category to the list");

@@ -1,6 +1,7 @@
 package il.ac.shenkar.courses.java.costmanager.view;
 
 
+import il.ac.shenkar.courses.java.costmanager.model.Category;
 import il.ac.shenkar.courses.java.costmanager.model.CostItem;
 import il.ac.shenkar.courses.java.costmanager.viewmodel.IViewModel;
 
@@ -23,5 +24,5 @@ public interface IView {
     public void showMessage(String text);
     public void showItems(CostItem[] vec);
     public void setViewModel(IViewModel vm);
-    public void showCategories(List<String> category);
+    public void showCategories(List<Category> category);
 }
