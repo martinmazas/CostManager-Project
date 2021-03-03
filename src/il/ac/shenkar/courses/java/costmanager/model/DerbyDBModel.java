@@ -207,7 +207,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void deleteCostItem(CostItem item) throws CostManagerException {
+    public void deleteCostItem(int id) throws CostManagerException {
         /**
          * Deleting from the table in the data base by using query , if fail exception will be catch.
          */
@@ -227,7 +227,7 @@ public class DerbyDBModel implements IModel {
         }
 
         try {
-            statement.executeUpdate("DELETE from inventory WHERE id=" + item.getId() + "");
+            statement.executeUpdate("DELETE from inventory WHERE id=" + id+ "");
         } catch (SQLException e) {
             throw new CostManagerException("Problem with deleting cost!", e);
         }

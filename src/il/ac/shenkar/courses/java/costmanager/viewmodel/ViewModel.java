@@ -50,6 +50,23 @@ public class ViewModel implements IViewModel {
     }
 
     @Override
+    public void deleteCostItem(int id) {
+        pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    model.deleteCostItem(id);
+                    view.showMessage("Cost item deleted successfully", "report");
+                    CostItem[] items = model.getCostItems();
+                    view.showItems(items, "report");
+                } catch (CostManagerException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
     public void getReport(String initDate, String endDate) {
         pool.submit(new Runnable() {
             CostItem[] items = null;

@@ -14,7 +14,7 @@ public interface IModel {
     /**
      * delete a cost from inventory table in database
      */
-    public void deleteCostItem(CostItem item) throws CostManagerException;
+    public void deleteCostItem(int id) throws CostManagerException;
 
     /**
      * add a new cost to categories table in database

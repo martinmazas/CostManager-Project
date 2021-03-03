@@ -14,6 +14,7 @@ public class DerbyDBModelTest {
     private DerbyDBModel model = new DerbyDBModel();
     CostItem item;
     Category cat;
+    int id;
 //    private static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 //    private static String protocol = "jdbc:derby:gagamoDB;create=true";
 
@@ -68,7 +69,7 @@ public class DerbyDBModelTest {
     public void deleteCostItem() {
         String expected = "Problem with deleting cost!";
         try{
-            model.deleteCostItem(item);
+            model.deleteCostItem(id);
         } catch (CostManagerException e) {
             assertEquals(expected,e.getMessage());
         }

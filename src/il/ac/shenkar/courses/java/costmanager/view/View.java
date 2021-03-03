@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class View implements IView {
 
     private IViewModel vm;
@@ -89,14 +91,14 @@ public class View implements IView {
         //reports frame
         private JFrame reportsFrame;
         private JPanel reportsPanelTop, reportsPanelBottom, reportsPanelMain, reportsPanelMessage;
-        private JTextField tfReportsMessage;
+        private JTextField tfReportsMessage, tfDeleteCost;
         private JButton btReports, btPieChart, backButtonReport;
         private JScrollPane scrollPaneReport;
         private JComboBox reportsBox;
         private JTextArea reportsTextArea;
-        private JLabel lbDateInit, lbDateEnd, lbReportsMessage, lbReport;
+        private JLabel lbDateInit, lbDateEnd, lbReportsMessage, lbReport, lbDelete;
         private JDatePickerImpl initDatePicker, endDatePicker;
-        private JButton btGetReport;
+        private JButton btGetReport, deleteButton;
 
         private List<Category> categories = new ArrayList<>();
 
@@ -173,6 +175,7 @@ public class View implements IView {
             reportsPanelMessage = new JPanel();
             reportsPanelMessage.setBackground(Color.GREEN);
             tfReportsMessage = new JTextField(30);
+            tfDeleteCost = new JTextField(30);
             String[] reportType = {"Reports", "Pie Chart"};
             reportsBox = new JComboBox(reportType);
             reportsTextArea = new JTextArea();
@@ -181,6 +184,7 @@ public class View implements IView {
             lbDateEnd = new JLabel("Select end date:");
             lbReportsMessage = new JLabel("Message:");
             lbReport = new JLabel("Choose the report type:");
+            lbDelete = new JLabel("Delete by id");
             UtilDateModel initialDateReportModel = new UtilDateModel();
             UtilDateModel endDateReportModel = new UtilDateModel();
             JDatePanelImpl initDatePanel = new JDatePanelImpl(initialDateReportModel, p);
@@ -190,6 +194,7 @@ public class View implements IView {
             btGetReport = new JButton("Get");
             backButtonCost = new JButton("Back");
             backButtonReport = new JButton("Back");
+            deleteButton = new JButton("Delete");
         }
 
         public void init() {
@@ -416,6 +421,9 @@ public class View implements IView {
             reportsPanelMessage.add(backButtonReport);
             reportsPanelMessage.add(lbReportsMessage);
             reportsPanelMessage.add(tfReportsMessage);
+            reportsPanelMessage.add(lbDelete);
+            reportsPanelMessage.add(tfDeleteCost);
+            reportsPanelMessage.add(deleteButton);
 
             //
             reportsFrame.setLayout(new BorderLayout());
@@ -476,6 +484,15 @@ public class View implements IView {
                     reportsPanelBottom.removeAll();
                     reportsFrame.setVisible(false);
                     initialFrame.setVisible(true);
+                }
+            });
+
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("delete");
+                    int deleteId = parseInt(tfDeleteCost.getText());
+                    vm.deleteCostItem(deleteId);
                 }
             });
 
