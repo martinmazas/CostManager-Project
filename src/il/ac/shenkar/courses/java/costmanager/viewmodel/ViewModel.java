@@ -41,7 +41,7 @@ public class ViewModel implements IViewModel {
                     model.addCostItem(item);
                     view.showMessage("Cost item added successfully!!");
                     CostItem[] items = model.getCostItems();
-                    view.showItems(items);
+                    view.showItems(items, "costItem");
                 } catch (CostManagerException e) {
                     view.showMessage((e.getMessage()));
                 }
@@ -58,7 +58,7 @@ public class ViewModel implements IViewModel {
                 try {
                     items = model.getCostReport(initDate, endDate);
                     view.showMessage("Get display report successfully!!");
-                    view.showItems(items);
+                    view.showItems(items, "reports");
                 } catch (CostManagerException e) {
                     view.showMessage((e.getMessage()));
                 }
@@ -74,7 +74,7 @@ public class ViewModel implements IViewModel {
                 try {
                     model.addNewCategory(category);
                     List<Category> categories = model.getCategoryList();
-//                    view.showCategories(categories);
+                    view.showCategories(categories);
                     view.showMessage("Added new category successfully!!");
                 } catch (CostManagerException e) {
                     view.showMessage((e.getMessage()));

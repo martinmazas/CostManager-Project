@@ -73,11 +73,9 @@ public class DerbyDBModel implements IModel {
          * Using SQL query to get all the categories from the table , enter them to a new list and returns it.
          */
 
-        // Statement statement = null;
-        // ResultSet rs;
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet rs = null;
+        Connection connection;
+        Statement statement;
+        ResultSet rs;
 
         try {
             Class.forName(driver);
@@ -89,7 +87,6 @@ public class DerbyDBModel implements IModel {
             throw new CostManagerException("Problem with the connection", e);
         }
 
-        // createConnection();
         List<Category> categoryList = new ArrayList<>();
 
         try {
@@ -112,7 +109,6 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);
         }
-        // stopConnection();
         return categoryList;
     }
 
@@ -120,8 +116,8 @@ public class DerbyDBModel implements IModel {
         /**
          * help function, if we want to change the table and delete.
          */
-        Connection connection = null;
-        Statement statement = null;
+        Connection connection;
+        Statement statement;
         ResultSet rs = null;
 
         try {
@@ -193,7 +189,7 @@ public class DerbyDBModel implements IModel {
 
             // execute the prepared statement
             preparedStmt.execute();
-//            items.add(item);
+            items.add(item);
         } catch (SQLException | ParseException e) {
             throw new CostManagerException("Problem with adding cost!", e);
         }
@@ -298,8 +294,8 @@ public class DerbyDBModel implements IModel {
          * Get all the cost between start date to end date, using the result set to output stream the data.
          * if fail throws exception.
          */
-        Connection connection = null;
-        Statement statement = null;
+        Connection connection;
+        Statement statement;
         ResultSet rs = null;
 
         try {
@@ -314,11 +310,8 @@ public class DerbyDBModel implements IModel {
 
         String query = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
                 "between '" + start + "' and '" + end + "' ORDER BY date";
-        System.out.println(query);
         try {
             rs = statement.executeQuery(query);
-            items = new ArrayList<>();
-            int i = 0;
             while (rs.next()) {
                 Currency currency = switch (rs.getString("currency")) {
                     case "EURO" -> Currency.EURO;
@@ -338,13 +331,11 @@ public class DerbyDBModel implements IModel {
         }
 
         if (statement != null) try {
-            System.out.println("stm close");
             statement.close();
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing statement!", e);
         }
         if (rs != null) try {
-            System.out.println("rs close");
             rs.close();
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);
@@ -360,7 +351,7 @@ public class DerbyDBModel implements IModel {
     @Override
     public JFreeChart getPieChart(String start, String end) throws CostManagerException {
         /**
-         * using jfreechart library to create image of pie chart with the relevant information,
+         * using JFreeChart library to create image of pie chart with the relevant information,
          * inner join both tables inventory and category to get the name of the category,
          * between start and end dates,  the result (dataset) will be use  in the library function to create the pie chart.
          */
@@ -391,8 +382,6 @@ public class DerbyDBModel implements IModel {
             chart = ChartFactory.createPieChart3D("Category - amounts", dataset, true, true, false);
             int width = 560;
             int height = 370;
-//            File pieChart = new File("Pie_Chart.jpeg");
-//            ChartUtilities.saveChartAsJPEG(pieChart, chart, width, height);
         } catch (SQLException e) {
             throw new CostManagerException("Problem getting data from specified dates");
         }

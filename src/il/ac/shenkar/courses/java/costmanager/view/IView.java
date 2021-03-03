@@ -23,7 +23,7 @@ public interface IView {
 //    public void displayGetCostReport();
     //    public void displayPieChart(Map map);
     public void showMessage(String text);
-    public void showItems(CostItem[] vec);
+    public void showItems(CostItem[] vec, String area);
     public void setViewModel(IViewModel vm);
     public void showCategories(List<Category> category);
     public void showPieChart(JFreeChart chart);

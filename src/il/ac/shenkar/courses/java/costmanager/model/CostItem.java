@@ -54,8 +54,7 @@ public class CostItem {
 
     @Override
     public String toString() {
-        return
-                id + "\t" +
+        return  id + "\t" +
                 date + "\t" +
                 currency + "\t" +
                 amount + "\t" +
