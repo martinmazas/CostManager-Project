@@ -28,8 +28,8 @@ public class View implements IView {
     private ApplicationUI ui;
 
     @Override
-    public void showMessage(String text) {
-        ui.showMessage(text);
+    public void showMessage(String text, String area) {
+        ui.showMessage(text, area);
     }
 
     @Override
@@ -357,9 +357,9 @@ public class View implements IView {
                         vm.addCostItem(item);
 
                     } catch (NumberFormatException ex) {
-                        View.this.showMessage("problem with entered sum... "+ex.getMessage());
+                        View.this.showMessage("problem with entered sum... "+ex.getMessage(), "costItem");
                     } catch(CostManagerException ex){
-                        View.this.showMessage("problem with entered data... problem with description... "+ex.getMessage());
+                        View.this.showMessage("problem with entered data... problem with description... "+ex.getMessage(), "costItem");
                     }
                 }
             });
@@ -483,14 +483,25 @@ public class View implements IView {
 //            reportsFrame.setVisible(true);
         }
 
-        public void showMessage(String text) {
+        public void showMessage(String text, String area) {
             if (SwingUtilities.isEventDispatchThread()) {
-                tfMessage.setText(text);
+                if(area.equals("costItem")) {
+                    tfMessage.setText(text);
+                }
+                else {
+                    tfReportsMessage.setText(text);
+                }
+
             } else {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        tfMessage.setText(text);
+                        if(area.equals("costItem")) {
+                            tfMessage.setText(text);
+                        }
+                        else {
+                            tfReportsMessage.setText(text);
+                        }
                     }
                 });
 

@@ -39,11 +39,11 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addCostItem(item);
-                    view.showMessage("Cost item added successfully!!");
+                    view.showMessage("Cost item added successfully!!", "costItem");
                     CostItem[] items = model.getCostItems();
                     view.showItems(items, "costItem");
                 } catch (CostManagerException e) {
-                    view.showMessage((e.getMessage()));
+                    view.showMessage((e.getMessage()), "costItem");
                 }
             }
         });
@@ -57,10 +57,10 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     items = model.getCostReport(initDate, endDate);
-                    view.showMessage("Get display report successfully!!");
+                    view.showMessage("Get display report successfully!!", "report");
                     view.showItems(items, "reports");
                 } catch (CostManagerException e) {
-                    view.showMessage((e.getMessage()));
+                    view.showMessage((e.getMessage()), "report");
                 }
             }
         });
@@ -75,9 +75,9 @@ public class ViewModel implements IViewModel {
                     model.addNewCategory(category);
                     List<Category> categories = model.getCategoryList();
                     view.showCategories(categories);
-                    view.showMessage("Added new category successfully!!");
+                    view.showMessage("Added new category successfully!!", "costItem");
                 } catch (CostManagerException e) {
-                    view.showMessage((e.getMessage()));
+                    view.showMessage((e.getMessage()), "costItem");
                 }
             }
         });
@@ -107,10 +107,10 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     chart = model.getPieChart(initDate, endDate);
-                    view.showMessage("Pie chart report successfully!!");
+                    view.showMessage("Pie chart report successfully!!", "report");
                     view.showPieChart(chart);
                 } catch (CostManagerException e) {
-                    view.showMessage((e.getMessage()));
+                    view.showMessage((e.getMessage()), "report");
                 }
             }
         });
