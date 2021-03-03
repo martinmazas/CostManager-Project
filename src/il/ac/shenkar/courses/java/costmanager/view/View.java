@@ -44,7 +44,12 @@ public class View implements IView {
 
     @Override
     public void showCategories(List<Category> categories) {
-        ui.showCategories(categories);
+        ui.showCat(categories);
+    }
+
+    @Override
+    public void showPieChart(JFreeChart chart) {
+        ui.showPieChart(chart);
     }
 
     public View() {
@@ -62,7 +67,6 @@ public class View implements IView {
         /**
          * Class for the ApplicationUI. There are three different frames. Main, Cost item and Reports.
          */
-
         //initial frame
         private JFrame initialFrame;
         private JPanel initialFramePanelTop, initialFramePanelBottom, initialFramePanelMain;
@@ -74,7 +78,7 @@ public class View implements IView {
         private JFrame costItemFrame;
         private JPanel costItemPanelTop, costItemPanelBottom, costItemPanelMain, costItemPanelMessage;
         private JTextField tfItemSum, tfItemCurrency,tfItemDescription,tfMessage, tfNewCategory;
-        private JButton btAddCostItem, btNewCategory, backButton;
+        private JButton btAddCostItem, btNewCategory, backButtonCost, backButtonReport;
         private JScrollPane scrollPane;
         private JComboBox categoryBox;
         private JTextArea textArea;
@@ -85,7 +89,7 @@ public class View implements IView {
         //reports frame
         private JFrame reportsFrame;
         private JPanel reportsPanelTop, reportsPanelBottom, reportsPanelMain, reportsPanelMessage;
-        private JTextField tfDateInit, tfDateEnd, tfReportsMessage;
+        private JTextField tfReportsMessage;
         private JButton btReports, btPieChart;
         private JComboBox reportsBox;
         private JTextArea reportsTextArea;
@@ -96,6 +100,7 @@ public class View implements IView {
         private List<Category> categories = new ArrayList<>();
 
         public ApplicationUI() {
+
             /**
              * Initialize each element of the UI
              */
@@ -104,6 +109,7 @@ public class View implements IView {
              * Initial frame
              */
             //creating the window
+//            vm.getCategoryList();
             initialFrame = new JFrame("CostManager");
 
             //creating the panels
@@ -181,15 +187,20 @@ public class View implements IView {
             initDatePicker = new JDatePickerImpl(initDatePanel, new DateLabelFormatter());
             endDatePicker = new JDatePickerImpl(endDatePanel, new DateLabelFormatter());
             btGetReport = new JButton("Get");
-            backButton = new JButton("Back");
+            backButtonCost = new JButton("Back");
+            backButtonReport = new JButton("Back");
         }
 
         public void init() {
             /**
              * Initialize the view Layout
              */
-
             vm.getCategoryList();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             // Adding components to the bottom panel
             initialFramePanelBottom.add(btGoCostItem);
             initialFramePanelBottom.add(btGoReports);
@@ -225,12 +236,22 @@ public class View implements IView {
             initialFrame.setSize(600, 300);
             initialFrame.setVisible(true);
 
+            getReports();
+            System.out.println("before costItem");
+//            int i = 0;
+//            while (categoryBox == null) {
+//                System.out.println(i);
+//                i += 1;
+//            }
+            costItem(); //test
+
             // Action buttons to go to next page
             btGoCostItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     initialFrame.setVisible(false);
-                    costItem();
+                    costItemFrame.setVisible(true);
+//                    costItem();
                 }
             });
 
@@ -238,7 +259,8 @@ public class View implements IView {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     initialFrame.setVisible(false);
-                    getReports();
+                    reportsFrame.setVisible(true);
+//                    getReports();
                 }
             });
         }
@@ -271,7 +293,7 @@ public class View implements IView {
             costItemPanelBottom.add(scrollPane);
 
             //adding the components to the messages panel
-            costItemPanelMessage.add(backButton);
+            costItemPanelMessage.add(backButtonCost);
             costItemPanelMessage.add(lbMessage);
             costItemPanelMessage.add(tfMessage);
             costItemPanelMessage.add(tfNewCategory);
@@ -338,7 +360,7 @@ public class View implements IView {
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         String reportDate = df.format(selectedDate);
 
-                        CostItem item = new CostItem(44,finalCategory,sum,currency ,description,reportDate );//needs to change id to be dynamic
+                        CostItem item = new CostItem(0,finalCategory,sum,currency ,description,reportDate );
                         vm.addCostItem(item);
 
                     } catch (NumberFormatException ex) {
@@ -353,27 +375,12 @@ public class View implements IView {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String cat = tfNewCategory.getText();
-                    Category newCategory = new Category(1,cat); //Need changes
+                    Category newCategory = new Category(0,cat); //Need changes
                     vm.addNewCategory(newCategory);
-//                    mod.addElement(vm.getCategoryList());
-
-//                    categoryBox.setModel(mod);
-//                    mod.addElement(cat);
-//                    categoryBox.setModel(mod);
-
-
-//                    categoryBox = null;
-//                    categories = vm.getCategoryList();
-//                    categoryBox = new JComboBox(categories.toArray());
-
-
-//                    categoryBox.add(vm.getCategoryList().toArray());
-//                    mod.addElement(cat);
-//                    categoryBox.setModel(mod);
                 }
             });
 
-            backButton.addActionListener(new ActionListener() {
+            backButtonCost.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     textArea.setText("");
@@ -389,7 +396,7 @@ public class View implements IView {
 
             //displaying the window
             costItemFrame.setSize(1500, 600);
-            costItemFrame.setVisible(true);
+//            costItemFrame.setVisible(true);
         }
 
         public void getReports() {
@@ -413,9 +420,9 @@ public class View implements IView {
             reportsPanelBottom.add(scrollPane);
 
             //
-            reportsPanelMessage.add(backButton);
+            reportsPanelMessage.add(backButtonReport);
             reportsPanelMessage.add(lbReportsMessage);
-            reportsPanelMessage.add(tfMessage);
+            reportsPanelMessage.add(tfReportsMessage);
 
             //
             reportsFrame.setLayout(new BorderLayout());
@@ -460,25 +467,29 @@ public class View implements IView {
                         vm.getReport(initialReportDate, endReportDate);
                     }
                     else if(reportType.equals("Pie Chart")) {
-                        JFreeChart chart= vm.getPieChart(initialReportDate, endReportDate);
-                        ChartPanel chartPanel = new ChartPanel(chart);
-                        reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
+                        vm.getPieChart(initialReportDate, endReportDate);
+//                        ChartPanel chartPanel = new ChartPanel(chart);
+//                        reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
                     }
                 }
             });
 
-            backButton.addActionListener(new ActionListener() {
+            backButtonReport.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     textArea.setText("");
                     tfMessage.setText("");
+                    tfReportsMessage.setText("");
+                    initDatePicker.getJFormattedTextField().setText("");
+                    endDatePicker.getJFormattedTextField().setText("");
+//                    reportsPanelBottom.removeAll();
                     reportsFrame.setVisible(false);
                     initialFrame.setVisible(true);
                 }
             });
 
             reportsFrame.setSize(1200, 600);
-            reportsFrame.setVisible(true);
+//            reportsFrame.setVisible(true);
         }
 
         public void showMessage(String text) {
@@ -516,7 +527,8 @@ public class View implements IView {
             }
         }
 
-        public void showCategories(List<Category> categories) {
+        public void showCat(List<Category> categories) {
+            System.out.println("First test");
             this.categories = categories;
             List<String> categoriesName = new ArrayList<>();
             for (Category category : categories) {
@@ -525,6 +537,37 @@ public class View implements IView {
             DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categoriesName.toArray());
             mod = new DefaultComboBoxModel(categoriesName.toArray());
             categoryBox = new JComboBox(modComboBox);
+//            categoryBox = new JComboBox(modComboBox);
+//            if (SwingUtilities.isEventDispatchThread()) {
+//                DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categoriesName.toArray());
+//                mod = new DefaultComboBoxModel(categoriesName.toArray());
+//                categoryBox = new JComboBox(modComboBox);
+//                System.out.println("if");
+//            } else {
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categoriesName.toArray());
+//                        mod = new DefaultComboBoxModel(categoriesName.toArray());
+//                        categoryBox = new JComboBox(modComboBox);
+//                        System.out.println("else");
+//                    }
+//                });
+//            }
+        }
+
+        public void showPieChart(JFreeChart chart) {
+            ChartPanel chartPanel = new ChartPanel(chart);
+            if (SwingUtilities.isEventDispatchThread()) {
+                reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
+                    }
+                });
+            }
         }
     }
 }

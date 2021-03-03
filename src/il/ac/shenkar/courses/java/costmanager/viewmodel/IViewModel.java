@@ -15,5 +15,5 @@ public interface IViewModel {
     public void getReport(String initDate, String endDate);
     public void addNewCategory(Category category);
     public void getCategoryList();
-    public JFreeChart getPieChart(String initDate, String endDate);
+    public void getPieChart(String initDate, String endDate);
 }

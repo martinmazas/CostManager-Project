@@ -193,7 +193,7 @@ public class DerbyDBModel implements IModel {
 
             // execute the prepared statement
             preparedStmt.execute();
-            items.add(item);
+//            items.add(item);
         } catch (SQLException | ParseException e) {
             throw new CostManagerException("Problem with adding cost!", e);
         }
@@ -252,7 +252,6 @@ public class DerbyDBModel implements IModel {
     public void addNewCategory(Category category) throws CostManagerException {
         /**
          * Making Prepared statement and enter his value safely to the table.
-         *
          */
 
         Connection connection = null;
@@ -315,8 +314,11 @@ public class DerbyDBModel implements IModel {
 
         String query = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
                 "between '" + start + "' and '" + end + "' ORDER BY date";
+        System.out.println(query);
         try {
             rs = statement.executeQuery(query);
+            items = new ArrayList<>();
+            int i = 0;
             while (rs.next()) {
                 Currency currency = switch (rs.getString("currency")) {
                     case "EURO" -> Currency.EURO;
@@ -328,10 +330,7 @@ public class DerbyDBModel implements IModel {
                 Category category = new Category(rs.getInt("categoryId"), rs.getString("name"));
                 CostItem item = new CostItem(rs.getInt("id"), category, rs.getDouble("amount"),currency,
                         rs.getString("description"), rs.getDate("date").toString());
-//                System.out.println("id - " + rs.getInt("id") + " \nCategory - " +
-//                        rs.getInt("categoryId") + " \nAmount - " + rs.getDouble("amount") +
-//                        " \ncurrency - " + rs.getString("currency") +
-//                        " \nDescription - " + rs.getString("description") + " \nDate - " + rs.getDate("date"));
+
                 items.add(item);
             }
         } catch (SQLException e) {
@@ -339,11 +338,13 @@ public class DerbyDBModel implements IModel {
         }
 
         if (statement != null) try {
+            System.out.println("stm close");
             statement.close();
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing statement!", e);
         }
         if (rs != null) try {
+            System.out.println("rs close");
             rs.close();
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);

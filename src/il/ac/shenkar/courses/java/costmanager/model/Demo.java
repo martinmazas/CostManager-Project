@@ -8,12 +8,13 @@ public class Demo {
 //            model.deleteTable("categories");
 //            model.createTable("categories", "(id int generated always as identity PRIMARY KEY , name varchar(256), " +
 //                    "CONSTRAINT UQ_Name UNIQUE(name))");
-//            model.createTable("inventory", "(id int generated always as identity PRIMARY KEY,categoryId int,amount double, " +
-//                    "currency varchar(250),description varchar(250),date DATE, FOREIGN KEY (categoryId) REFERENCES categories(id))");
+            model.createTable("inventory", "(id int generated always as identity PRIMARY KEY,categoryId int,amount double, " +
+                    "currency varchar(250),description varchar(250),date DATE, FOREIGN KEY (categoryId) REFERENCES categories(id))");
 //
 //
-            Category cat = new Category(5,"Super");
-            model.addNewCategory(cat);
+//            model.deleteTable("inventory");
+//            Category cat = new Category(5,"Super");
+//            model.addNewCategory(cat);
 //            List<Category> categoryList = model.getCategoryList();
 //            for(int i = 0; i<categoryList.size(); i++) {
 //                System.out.println(categoryList.get(i));

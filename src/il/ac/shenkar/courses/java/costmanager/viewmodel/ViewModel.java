@@ -52,10 +52,11 @@ public class ViewModel implements IViewModel {
     @Override
     public void getReport(String initDate, String endDate) {
         pool.submit(new Runnable() {
+            CostItem[] items = null;
             @Override
             public void run() {
                 try {
-                    CostItem[] items = model.getCostReport(initDate, endDate);
+                    items = model.getCostReport(initDate, endDate);
                     view.showMessage("Get display report successfully!!");
                     view.showItems(items);
                 } catch (CostManagerException e) {
@@ -72,8 +73,8 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addNewCategory(category);
-                    getCategoryList();
-//                    List<String> categories = model.getCategoryList();
+                    List<Category> categories = model.getCategoryList();
+//                    view.showCategories(categories);
                     view.showMessage("Added new category successfully!!");
                 } catch (CostManagerException e) {
                     view.showMessage((e.getMessage()));
@@ -85,32 +86,33 @@ public class ViewModel implements IViewModel {
     @Override
     public void getCategoryList() {
         pool.submit(new Runnable() {
+            List<Category> categories = null;
             @Override
             public void run() {
-                List<Category> categories = null;
                 try {
                     categories = model.getCategoryList();
+                    view.showCategories(categories);
                 } catch (CostManagerException e) {
                     e.printStackTrace();
                 }
-                view.showCategories(categories);
             }
         });
     }
 
-
     @Override
-    public JFreeChart getPieChart(String initDate, String endDate) {
-        JFreeChart chart = null;
-        try {
-            chart = model.getPieChart(initDate, endDate);
-            view.showMessage("Pie chart report successfully!!");
-        } catch (CostManagerException e) {
-            view.showMessage((e.getMessage()));
-        } finally {
-            return chart;
-        }
+    public void getPieChart(String initDate, String endDate) {
+        pool.submit(new Runnable() {
+            JFreeChart chart = null;
+            @Override
+            public void run() {
+                try {
+                    chart = model.getPieChart(initDate, endDate);
+                    view.showMessage("Pie chart report successfully!!");
+                    view.showPieChart(chart);
+                } catch (CostManagerException e) {
+                    view.showMessage((e.getMessage()));
+                }
+            }
+        });
     }
-
 }
-
