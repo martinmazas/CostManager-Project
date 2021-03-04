@@ -1,27 +1,21 @@
 package il.ac.shenkar.courses.java.costmanager.view;
 
-
 import il.ac.shenkar.courses.java.costmanager.model.Category;
 import il.ac.shenkar.courses.java.costmanager.model.CostItem;
 import il.ac.shenkar.courses.java.costmanager.viewmodel.IViewModel;
 import org.jfree.chart.JFreeChart;
-
 import java.util.List;
 
+/**
+ * View interface of CostManager
+ * @methods
+ * showMessage- show the action message to the user
+ * showItems- show the items to the user
+ * setViewModel- connect the View interface to ViewModel interface
+ * showCategories- show the categories to the user
+ * showPieChart- show the pie chart to the user
+ */
 public interface IView {
-    /**
-     * Display the GUI for add a new cost item layout
-     */
-//    public void displayAddCostItem();
-    /**
-     * Display the GUI for add a new category layout
-     */
-//    public void displayAddNewCategory();
-    /**
-     * Display the GUI for get the selected report(pie, regular report)
-     */
-//    public void displayGetCostReport();
-    //    public void displayPieChart(Map map);
     public void showMessage(String text, String area);
     public void showItems(CostItem[] vec, String area);
     public void setViewModel(IViewModel vm);

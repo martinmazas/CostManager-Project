@@ -4,10 +4,19 @@ import il.ac.shenkar.courses.java.costmanager.model.Category;
 import il.ac.shenkar.courses.java.costmanager.model.CostItem;
 import il.ac.shenkar.courses.java.costmanager.model.IModel;
 import il.ac.shenkar.courses.java.costmanager.view.IView;
-import org.jfree.chart.JFreeChart;
 
-import java.util.List;
-
+/**
+ * ViewModel interface of CostManager
+ * @methods
+ * setView- connect the ViewModel interface to View interface
+ * setModel- connect the ViewModel interface to Model interface
+ * addCostItem- request from the view to add a new cost item into the model
+ * deleteCostItem- request from the view to delete an item from the model
+ * getReport- request from the view to get a report from the model
+ * addNewCategory- request from the view to add a new category into the model
+ * getCategoryList- request from the view to get all the categories from the model
+ * getPieChart- request from the view to get a pie chart from the model
+ */
 public interface IViewModel {
     public void setView(IView view);
     public void setModel(IModel model);

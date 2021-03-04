@@ -6,17 +6,24 @@ import il.ac.shenkar.courses.java.costmanager.model.CostManagerException;
 import il.ac.shenkar.courses.java.costmanager.model.IModel;
 import il.ac.shenkar.courses.java.costmanager.view.IView;
 import org.jfree.chart.JFreeChart;
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @class ViewModel - ViewModel class that implements the IViewModel interface.
+ * @members
+ * model - connection to Model interface
+ * view - connection to View interface.
+ * pool- a variable to hold all the Threads
+ * @methods
+ * ViewModel- constructor that initiates the thread poll for every action
+ */
 public class ViewModel implements IViewModel {
 
     private IModel model;
     private IView view;
     private ExecutorService pool;
-
 
     public ViewModel() {
         pool = Executors.newFixedThreadPool(10);
