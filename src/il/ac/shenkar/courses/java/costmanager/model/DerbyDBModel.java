@@ -17,10 +17,10 @@ import java.util.List;
 public class DerbyDBModel implements IModel {
     /**
      * DataBase model using DerbyDB and implements the IModel interface, create embedded connection to the DB,
-     * creates a DB called gagamoDB at the end close the connections.
+     * creates a DB called costManageDB at the end close the connections.
      */
     private static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-    private static String protocol = "jdbc:derby:gagamoDB;create=true";
+    private static String protocol = "jdbc:derby:costManagerDB;create=true";
     private List<CostItem> items = new ArrayList<>();
 
 
