@@ -60,7 +60,7 @@ public class ViewModel implements IViewModel {
                     CostItem[] items = model.getCostItems();
                     view.showItems(items, "report");
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    view.showMessage((e.getMessage()), "report");
                 }
             }
         });
@@ -110,7 +110,7 @@ public class ViewModel implements IViewModel {
                     categories = model.getCategoryList();
                     view.showCategories(categories);
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    view.showMessage((e.getMessage()), "costItem");
                 }
             }
         });

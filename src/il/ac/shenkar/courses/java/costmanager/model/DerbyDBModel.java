@@ -172,6 +172,7 @@ public class DerbyDBModel implements IModel {
         }
 
         try {
+            items = new ArrayList<>();
             String query = "INSERT into inventory (categoryId,amount,currency,description,date) "
                     + "values (?,?,?,?,?)";
             String date = item.getDate();
@@ -311,6 +312,7 @@ public class DerbyDBModel implements IModel {
         String query = "SELECT * FROM inventory INNER JOIN categories on categoryId=categories.id WHERE Date " +
                 "between '" + start + "' and '" + end + "' ORDER BY date";
         try {
+            items = new ArrayList<>();
             rs = statement.executeQuery(query);
             while (rs.next()) {
                 Currency currency = switch (rs.getString("currency")) {

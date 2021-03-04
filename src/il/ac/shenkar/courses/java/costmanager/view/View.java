@@ -46,7 +46,7 @@ public class View implements IView {
 
     @Override
     public void showCategories(List<Category> categories) {
-        ui.showCat(categories);
+        ui.showCategories(categories);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class View implements IView {
         private JTextArea textArea;
         private JLabel lbItemSum,lbItemCurrency,lbItemDescription,lbMessage,lbCategory,lbDate;
         private JDatePickerImpl datePicker;
-        private DefaultComboBoxModel mod;
+//        private DefaultComboBoxModel mod;
 
         //reports frame
         private JFrame reportsFrame;
@@ -99,6 +99,7 @@ public class View implements IView {
         private JLabel lbDateInit, lbDateEnd, lbReportsMessage, lbReport, lbDelete;
         private JDatePickerImpl initDatePicker, endDatePicker;
         private JButton btGetReport, deleteButton;
+        private ChartPanel chartPanel;
 
         private List<Category> categories = new ArrayList<>();
 
@@ -478,10 +479,11 @@ public class View implements IView {
                 public void actionPerformed(ActionEvent e) {
                     reportsTextArea.setText("");
                     tfReportsMessage.setText("");
-                    tfReportsMessage.setText("");
                     initDatePicker.getJFormattedTextField().setText("");
                     endDatePicker.getJFormattedTextField().setText("");
-                    reportsPanelBottom.removeAll();
+                    if(chartPanel != null) {
+                        reportsPanelBottom.remove(chartPanel);
+                    }
                     reportsFrame.setVisible(false);
                     initialFrame.setVisible(true);
                 }
@@ -490,7 +492,6 @@ public class View implements IView {
             deleteButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("delete");
                     int deleteId = parseInt(tfDeleteCost.getText());
                     vm.deleteCostItem(deleteId);
                 }
@@ -533,11 +534,13 @@ public class View implements IView {
             }
             String text = sb.toString();
 
+
             if (SwingUtilities.isEventDispatchThread()) {
                 if(area.equals("costItem")) {
                     textArea.setText(text);
                 }
                 else {
+                    reportsTextArea.setText("");
                     reportsTextArea.setText(text);
                 }
 
@@ -547,6 +550,7 @@ public class View implements IView {
                         textArea.setText(text);
                     }
                     else {
+                        reportsTextArea.setText("");
                         reportsTextArea.setText(text);
                     }
                 });
@@ -554,27 +558,39 @@ public class View implements IView {
             }
         }
 
-        public void showCat(List<Category> categories) {
+        public void showCategories(List<Category> categories) {
             this.categories = categories;
             List<String> categoriesName = new ArrayList<>();
             for (Category category : categories) {
                 categoriesName.add(category.getName());
             }
+
             DefaultComboBoxModel modComboBox = new DefaultComboBoxModel(categoriesName.toArray());
+
 //            mod = new DefaultComboBoxModel(categoriesName.toArray());
-            categoryBox = new JComboBox(modComboBox);
+            if(categoryBox != null) {
+                categoryBox.setModel( modComboBox );
+            }
+            else {
+                categoryBox = new JComboBox(modComboBox);
+            }
+
+
         }
 
         public void showPieChart(JFreeChart chart) {
-            ChartPanel chartPanel = new ChartPanel(chart);
-            reportsPanelBottom.removeAll();
+            if(chartPanel != null) {
+                reportsPanelBottom.remove(chartPanel);
+            }
+            chartPanel = new ChartPanel(chart);
+//            reportsPanelBottom.remove(chartPanel);
             if (SwingUtilities.isEventDispatchThread()) {
-                reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
                 SwingUtilities.updateComponentTreeUI(reportsPanelBottom);
+                reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
             } else {
                 SwingUtilities.invokeLater(() -> {
-                    reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
                     SwingUtilities.updateComponentTreeUI(reportsPanelBottom);
+                    reportsPanelBottom.add(chartPanel, BorderLayout.CENTER);
                 });
             }
         }
