@@ -1,11 +1,31 @@
 package il.ac.shenkar.courses.java.costmanager.model;
 
-
+/**
+ * @class CostItem - Class for the user costs, used to hold information about the expense.
+ * @members
+ * id - id representation for the cost in the DB.
+ * category - category of the cost.
+ * amount - amount of the cost.
+ * currency - currency of the cost.
+ * description - user cost description.
+ * date - date of the cost.
+ * @methods
+ * setId() - set the id of the costItem to a new one.
+ * getId() - return the id of the costItem.
+ * getDescription()- return the description of the costItem
+ * setDescription()- set the description of the new costItem
+ * getAmount()- return the amount of the costItem
+ * setAmount()- set the amount of the new costItem
+ * getCurrency()- return the currency of the costItem
+ * setCurrency()- set the currency of the new costItem
+ * getCategory()- return the category of the costItem
+ * setCategory()- set the category of the new costItem
+ * getDate()- return the date of the costItem
+ * setDate()- set the date of the new costItem
+ * toString() - return string representation of the class.
+ */
 public class CostItem {
-    /**
-     * CostItem class , used to hold information about the expense
-     * and got getters and setters for all members of the class.
-     */
+
     private int id;
     private Category category;
     private double amount;
@@ -13,10 +33,16 @@ public class CostItem {
     private String description;
     private String date;
 
+    /**
+     * Constructor for the object, use the methods to assign the values inside the members.
+     * @param id- id of the cost in DB
+     * @param category- category of the cost
+     * @param amount- amount of the cost
+     * @param currency- currency of the cost
+     * @param description- description of the cost
+     * @param date- date of the cost
+     */
     public CostItem(int id,Category category, double amount, Currency currency, String description, String date) {
-        /**
-         * Constructor for the object, use the methods to assign the values inside the members.
-         */
         setId(id);
         setCategory(category);
         setAmount(amount);

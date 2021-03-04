@@ -3,8 +3,6 @@ package il.ac.shenkar.courses.java.costmanager.model;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
-
-
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,7 +11,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * @class DerbyDBModel - DataBase model using DerbyDB and implements the IModel interface.
+ * @members
+ * driver - To load the driver in order to work with the database.
+ * protocol - connection URL.
+ * items - Array of expenses in database
+ * @methods
+ * getCategoryList() - return all the categories in database.
+ */
 public class DerbyDBModel implements IModel {
     /**
      * DataBase model using DerbyDB and implements the IModel interface, create embedded connection to the DB,
@@ -24,15 +30,14 @@ public class DerbyDBModel implements IModel {
     private List<CostItem> items = new ArrayList<>();
 
 
+    /**
+     * Using just at the beginning, creates a table with name and information.
+     * if table created successfully enters 3 default categories to a defined table;
+     * happens only once!.
+     */
     public void createTable(String tableName, String columns) throws CostManagerException {
-        /**
-         * Using just at the beginning, creates a table with name and information.
-         * if table created successfully enters 3 default categories to a defined table;
-         * happens only once!.
-         */
-
-        Connection connection = null;
-        Statement statement = null;
+        Connection connection;
+        Statement statement;
         ResultSet rs = null;
 
         try {
@@ -97,7 +102,7 @@ public class DerbyDBModel implements IModel {
                 categoryList.add(category);
             }
         } catch (SQLException e) {
-            throw new CostManagerException("Problem with add category to the list");
+            throw new CostManagerException("Problem with getting categories list");
         }
         try {
             statement.close();
@@ -155,7 +160,7 @@ public class DerbyDBModel implements IModel {
         /**
          * Using query to add values into fixed table of cost items,
          * first making prepared statements and then safely enter each value to his place,
-         * then execute the statement and if thrown exception it will be catch by our costmangerexception class.
+         * then execute the statement and if thrown exception it will be catch by our costMangerException class.
          */
         Connection connection = null;
         Statement statement = null;
@@ -355,7 +360,8 @@ public class DerbyDBModel implements IModel {
         /**
          * using JFreeChart library to create image of pie chart with the relevant information,
          * inner join both tables inventory and category to get the name of the category,
-         * between start and end dates,  the result (dataset) will be use  in the library function to create the pie chart.
+         * between start and end dates, the result (dataset) will be use
+         * in the library function to create the pie chart.
          */
 
         Connection connection = null;
@@ -398,7 +404,6 @@ public class DerbyDBModel implements IModel {
         } catch (SQLException e) {
             throw new CostManagerException("Problem with closing result", e);
         }
-
         return  chart;
     }
 }
