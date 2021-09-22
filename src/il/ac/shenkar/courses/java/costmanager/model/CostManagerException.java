@@ -1,5 +1,3 @@
-// Niv Swisa 307929257
-// Martin Mazas 329834857
 package il.ac.shenkar.courses.java.costmanager.model;
 
 public class CostManagerException extends Exception {

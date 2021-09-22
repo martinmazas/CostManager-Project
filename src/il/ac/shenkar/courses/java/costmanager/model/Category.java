@@ -1,12 +1,12 @@
-// Niv Swisa 307929257
-// Martin Mazas 329834857
 package il.ac.shenkar.courses.java.costmanager.model;
 
 /**
  * @class Category - Class for the categories of the expense.
- * @members id - id representation for the Category in the DB.
+ * @members
+ * id - id representation for the Category in the DB.
  * name - name of the Category.
- * @methods getId() - return the id of the category.
+ * @methods
+ * getId() - return the id of the category.
  * setId() - set the id of the category to a new one.
  * getName() - return the name of the category.
  * setName() - set the name of the category to new one.
@@ -19,8 +19,7 @@ public class Category {
 
     /**
      * Constructor of a new Category
-     *
-     * @param id-   id of the category in DB
+     * @param id- id of the category in DB
      * @param name- name of the category
      */
     public Category(int id, String name) {
